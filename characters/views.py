@@ -1,6 +1,7 @@
 from random import choice
 
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status, generics
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
@@ -11,8 +12,10 @@ from characters.models import Character
 from characters.serializers import CharacterSerializer
 
 
+@extend_schema(responses={status.HTTP_200_OK: CharacterSerializer})
 @api_view(["GET"])
 def get_random_character_view(request: Request) -> Response:
+    """Get a random character from Rick & Morty world"""
     pks = Character.objects.values_list("pk", flat=True)  # flat=True  return LIST of id
     random_pk = choice(pks)
     random_character = Character.objects.get(pk=random_pk)
@@ -36,3 +39,19 @@ class CharacterListView(generics.ListAPIView):
     serializer_class = CharacterSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = CharacterFilter
+
+    #  dlia SPOSOB 1  nuzhno perenaznachit metod "list"
+    # @extend_schema(
+    #     parameters=[
+    #         OpenApiParameter(
+    #             name="name",
+    #             description="Filter by name insensitive contains",
+    #             required=False,
+    #             type=str,
+    #         ),
+    #     ]
+    # )
+    #  dlia dvuh SPOSOBOV  - chtoby bylo OPIDANIE endpointa
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        """List characters with filter by name"""
+        return super().get(request, *args, **kwargs)
