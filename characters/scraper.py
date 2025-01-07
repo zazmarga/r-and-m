@@ -1,3 +1,5 @@
+from sqlite3 import IntegrityError
+
 import requests
 from django.conf import settings
 
@@ -34,7 +36,10 @@ def scrape_characters() -> list[Character]:
 
 def save_characters(characters: list[Character]) -> None:
     for character in characters:
-        character.save()
+        if character.api_id not in Character.objects.values_list("api_id", flat=True):
+            character.save()
+        else:
+            print(f"Character {character.api_id} already exists")
 
 
 def sync_characters_with_api() -> None:
