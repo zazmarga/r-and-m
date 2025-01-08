@@ -37,3 +37,9 @@
 * Run Celery beat for tasks scheduling: `celery -A rick_and_morty_api beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler`
 * Create schedule for running sync in DB
 * Run app: `python manage.py runserver`
+
+### How to run _**using docker-compose**_:
+
+* Copy .env.sample -> .env and populate with all required data
+* `docker-compose up --build`
+* Create admin user & Create schedule for running sync with DB 
