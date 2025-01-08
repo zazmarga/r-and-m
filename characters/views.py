@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from characters.filters import CharacterFilter
 from characters.models import Character
 from characters.serializers import CharacterSerializer
+from pagination import CharacterListPagination
 
 
 def get_random_character() -> Character:
@@ -41,6 +42,7 @@ class CharacterListView(generics.ListAPIView):
     # SPOSOB  2  standart DRF - Setting filter backends  (import django_filters.rest_framework)
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
+    pagination_class = CharacterListPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = CharacterFilter
 

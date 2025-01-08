@@ -144,7 +144,11 @@ RICK_AND_MORTY_API_CHARACTER_URL = "https://rickandmortyapi.com/api/character"
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 100
 }
 
 SPECTACULAR_SETTINGS = {
