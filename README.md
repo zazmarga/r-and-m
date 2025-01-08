@@ -21,9 +21,18 @@
 * Create venv: `python -m venv venv`
 * Activate it: `venv/Scripts/activate`
 * Install requirements: `pip install -r requirements.txt`
+* Create new Postgres DB & user (using docker postgres-image)
+    1)  `docker pull postgres`
+    2)  `docker run --name rick_and_morty -e POSTGRES_PASSWORD=<password db> -d postgres`
+    3)  `docker exec -it rick_and_morty psql -U postgres`
+    4) postgres:  `\c rick_and_morty`
+    5) postgres:  `CREATE DATABASE rick_and_morty;`
+    6) postgres:  `CREATE USER rick_and_morty_user WITH ENCRYPTED PASSWORD 'password db';`
+    7) postgres:  `GRANT ALL PRIVILEGES ON DATABASE rick_and_morty TO rick_and_morty_user;`
+    8) postgres:  `\l`  (for check DB)
 * Run migrations: `python manage.py migrate`
 * Run Redis Server: `docker run -d -p 6379:6379 redis`
-* Run Celery worker for tasks handing: `celery -A rick_and_motry_api worker -l INFO`
+* Run Celery worker for tasks handing: `celery -A rick_and_morty_api worker -l INFO`
 <or `celery -A rick_and_morty_api worker --pool=solo -l INFO` (me)>
 * Run Celery beat for tasks scheduling: `celery -A rick_and_morty_api beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler`
 * Create schedule for running sync in DB
